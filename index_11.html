@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title data-keep="">나갈래 캠핑 지도</title>
+<link data-keep="" rel="preconnect" href="https://fonts.googleapis.com">
+<link data-keep="" rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link data-keep="" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&amp;family=Gothic+A1:wght@400;700;900&amp;family=Luckiest+Guy&amp;display=swap">
+<style data-keep="">
+  :root{
+    color-scheme: light;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --paper:#EFE6D2;
+    --paper2:#E3D7BC;
+    --ink:#15130E;
+    --olive:#6E7C36;
+    --red:#C6382C;
+    --yellow:#F0BE2B;
+    --pink:#E4568F;
+    --sky:#4E7FA6;
+    --f-head:"Black Han Sans","Gothic A1",sans-serif;
+    --f-pop:"Luckiest Guy","Black Han Sans",cursive;
+    --f-body:"Gothic A1",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",system-ui,sans-serif;
+    --hard:5px 5px 0 var(--ink);
+    --hard-sm:3px 3px 0 var(--ink);
+  }
+  html{-webkit-text-size-adjust:100%}
+  *{box-sizing:border-box}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--f-body);font-size:15px;line-height:1.72;font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(rgba(21,19,14,.13) 1px, transparent 1.3px);
+    background-size:7px 7px;
+  }
+  h1,h2,h3,h4{margin:0;font-weight:400;text-wrap:balance;word-break:keep-all}
+  p,li{word-break:keep-all}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding-inline:18px}
+
+  /* ═ bar ═ */
+  .bar{background:var(--ink);color:var(--paper);position:sticky;top:env(safe-area-inset-top,0px);z-index:50;border-bottom:3px solid var(--ink)}
+  .bar-in{display:flex;align-items:center;gap:14px;min-height:56px}
+  .bar img{width:34px;height:34px;border-radius:50%;background:#fff;flex:none}
+  .bar b{font-family:var(--f-head);font-size:20px;letter-spacing:.04em}
+  .bar nav{display:flex;gap:16px;margin-left:auto;font-size:13px;font-weight:700}
+  .bar nav a{text-decoration:none;opacity:.72}
+  .bar nav a:hover{opacity:1;color:var(--yellow)}
+  .ig{background:var(--red);color:#fff;text-decoration:none;font-weight:900;font-size:12.5px;padding:6px 13px;border-radius:999px;white-space:nowrap}
+  .ig:hover{background:var(--yellow);color:var(--ink)}
+
+  /* ═ hero ═ */
+  .hero{background:var(--olive);color:var(--paper);border-bottom:4px solid var(--ink);position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,.22) 1.4px, transparent 1.6px);background-size:9px 9px;pointer-events:none}
+  .hero-in{position:relative;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;padding-block:clamp(36px,6vw,62px)}
+  .hero h1{font-family:var(--f-head);font-size:clamp(52px,12vw,116px);line-height:.94;letter-spacing:-.01em;text-shadow:5px 5px 0 var(--ink)}
+  .hero h1 span{color:var(--yellow)}
+  .kicker{display:inline-block;background:var(--yellow);color:var(--ink);font-family:var(--f-pop);font-size:clamp(14px,2.4vw,19px);padding:3px 14px;border:3px solid var(--ink);box-shadow:var(--hard-sm);transform:rotate(-2deg);margin-bottom:20px}
+  .hero p{margin-top:22px;max-width:34ch;font-size:16.5px;font-weight:700;line-height:1.66}
+  .hero .sub{font-weight:500;opacity:.96;font-size:14.5px;margin-top:10px;max-width:40ch}
+  .biglogo{width:clamp(110px,18vw,190px);height:auto;filter:drop-shadow(5px 5px 0 rgba(0,0,0,.45));transform:rotate(4deg)}
+  .badges{display:flex;flex-wrap:wrap;gap:10px;padding-bottom:clamp(28px,4vw,44px);position:relative}
+  .badge{background:var(--paper);color:var(--ink);border:3px solid var(--ink);box-shadow:var(--hard-sm);padding:7px 14px;font-weight:900;font-size:13.5px}
+  .badge b{font-family:var(--f-pop);font-size:19px;color:var(--red)}
+  .badge:nth-child(2){transform:rotate(-1.5deg)}
+  .badge:nth-child(3){transform:rotate(1.5deg)}
+  .badge:nth-child(4){background:var(--yellow)}
+
+  /* ═ sections ═ */
+  section{scroll-margin-top:74px;padding-block:clamp(44px,6vw,72px) 0}
+  .sh{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  .sh .no{font-family:var(--f-pop);font-size:15px;background:var(--ink);color:var(--paper);width:34px;height:34px;display:grid;place-items:center;border-radius:50%;flex:none}
+  .sh h2{font-family:var(--f-head);font-size:clamp(27px,4.6vw,42px);line-height:1.1}
+  .sh-sub{font-size:14.5px;font-weight:700;color:#5C5642;margin-bottom:28px;max-width:52ch}
+
+  .play{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:20px}
+  .pcard{border:3px solid var(--ink);box-shadow:var(--hard);padding:20px 20px 22px;background:var(--paper)}
+  .pcard:nth-child(1){background:var(--red);color:#fff;transform:rotate(-.7deg)}
+  .pcard:nth-child(2){background:var(--yellow)}
+  .pcard:nth-child(3){background:var(--sky);color:#fff;transform:rotate(.7deg)}
+  .pcard .n{font-family:var(--f-pop);font-size:13px;opacity:.72;display:block;margin-bottom:6px}
+  .pcard h3{font-family:var(--f-head);font-size:22px;margin-bottom:9px;line-height:1.22}
+  .pcard p{font-size:14px;font-weight:700;line-height:1.66}
+
+  .scen{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+  .sbtn{font-family:var(--f-body);font-weight:900;font-size:14px;cursor:pointer;background:var(--paper);color:var(--ink);border:3px solid var(--ink);box-shadow:var(--hard-sm);padding:8px 15px;transition:transform .1s, box-shadow .1s, background .1s}
+  .sbtn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+  .sbtn[aria-pressed="true"]{background:var(--ink);color:var(--yellow);box-shadow:3px 3px 0 var(--red)}
+  .sbtn:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+  .hits{font-weight:900;font-size:14px;color:var(--red);margin-bottom:20px}
+
+  .mapgrid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:26px;align-items:start}
+  .mapbox{background:#fff;border:3px solid var(--ink);box-shadow:var(--hard);padding:6px}
+  .mapbox svg{display:block;width:100%;height:auto;max-width:100%;touch-action:none}
+  .ring{fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:7 7;opacity:.5}
+  .ringfill{fill:var(--olive);opacity:.1}
+  .spoke{stroke:var(--ink);stroke-width:1.5;opacity:.22}
+  .rlab{font-family:var(--f-pop);font-size:13px;fill:#7A7258;text-anchor:middle;stroke:#fff;stroke-width:6;paint-order:stroke}
+  .plab{font-family:"Gothic A1",sans-serif;font-weight:900;font-size:12.5px;fill:var(--ink);stroke:#fff;stroke-width:4.5;paint-order:stroke;pointer-events:none}
+  .pin{cursor:pointer}
+  .pin .dot{stroke:var(--ink);stroke-width:2.5}
+  .pin:hover .dot,.pin:focus-visible .dot{r:10}
+  .pin:focus{outline:none}
+  .pin:focus-visible .halo{opacity:1}
+  .halo{fill:none;stroke:var(--red);stroke-width:2.5;opacity:0;r:14}
+  .home circle{fill:var(--ink)}
+  .hlab{font-family:var(--f-pop);font-size:16px;fill:var(--ink);text-anchor:middle;stroke:#fff;stroke-width:5;paint-order:stroke}
+  .key{display:flex;flex-direction:column;gap:16px}
+  .keybox{border:3px solid var(--ink);background:var(--paper);box-shadow:var(--hard-sm);padding:16px 18px}
+  .keybox h4{font-family:var(--f-head);font-size:16px;margin-bottom:10px}
+  .krow{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:700;padding:3px 0}
+  .sw{width:14px;height:14px;border-radius:50%;border:2.5px solid var(--ink);flex:none}
+  .keybox.tip{background:var(--yellow)}
+  .keybox.tip p{font-size:13px;font-weight:700;line-height:1.66}
+
+  /* ═ cards ═ */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+  .card{background:var(--paper);border:3px solid var(--ink);box-shadow:var(--hard);display:flex;flex-direction:column;position:relative}
+  .card.flash{box-shadow:5px 5px 0 var(--red), 0 0 0 5px var(--yellow)}
+  .chead{display:flex;align-items:flex-start;gap:12px;padding:16px 18px 13px;border-bottom:3px solid var(--ink)}
+  .chead h3{font-family:var(--f-head);font-size:21px;line-height:1.24}
+  .chead .loc{font-size:12px;font-weight:700;color:#6B6450;margin-top:2px}
+  .mins{flex:none;text-align:center;background:var(--ink);color:var(--yellow);padding:5px 9px;min-width:56px}
+  .mins b{display:block;font-family:var(--f-pop);font-size:19px;line-height:1}
+  .mins span{font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--paper);opacity:.75}
+  .price{display:inline-block;background:var(--yellow);border:2.5px solid var(--ink);font-weight:900;font-size:13px;padding:2px 10px;margin:14px 18px 0;align-self:flex-start}
+  .gist{padding:11px 18px 0;font-size:14px;font-weight:700;line-height:1.66}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;padding:13px 18px 0}
+  .chips i{font-style:normal;font-size:11.5px;font-weight:700;border:2px solid var(--ink);padding:1px 7px;background:#fff}
+  .chips i.bad{background:var(--red);color:#fff}
+  .bubble{margin:16px 18px 0;background:#fff;border:2.5px solid var(--ink);padding:12px 14px;position:relative}
+  .bubble::after{content:"";position:absolute;left:22px;bottom:-11px;width:0;height:0;border:9px solid transparent;border-top-color:var(--ink);border-bottom:0}
+  .bubble h4{font-family:var(--f-pop);font-size:11px;color:var(--red);margin-bottom:4px}
+  .bubble p{font-size:13.5px;font-weight:700;line-height:1.62}
+  .cfoot{margin-top:auto;padding:22px 18px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .cfoot a{font-size:12px;font-weight:900;text-decoration:none;background:var(--ink);color:var(--paper);padding:5px 12px}
+  .cfoot a:hover{background:var(--red);color:#fff}
+  .cfoot .tel{font-size:12.5px;font-weight:700;color:#6B6450}
+  .far{position:absolute;top:-13px;right:12px;background:var(--sky);color:#fff;border:2.5px solid var(--ink);font-size:11px;font-weight:900;padding:1px 9px;transform:rotate(3deg)}
+
+  .kit{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+  .kbox{border:3px solid var(--ink);box-shadow:var(--hard);padding:18px 20px 20px;background:#fff}
+  .kbox:nth-child(2){background:var(--yellow)}
+  .kbox:nth-child(3){background:var(--paper2)}
+  .kbox h3{font-family:var(--f-head);font-size:19px;margin-bottom:12px}
+  .kbox ul{margin:0;padding-left:1.15em;font-size:14px;font-weight:700;display:flex;flex-direction:column;gap:8px;line-height:1.6}
+
+  .cta{margin-top:clamp(48px,7vw,80px);background:var(--ink);color:var(--paper);border-top:4px solid var(--ink)}
+  .cta-in{padding-block:clamp(40px,6vw,64px);display:flex;flex-wrap:wrap;gap:26px;align-items:center}
+  .cta h2{font-family:var(--f-head);font-size:clamp(28px,5vw,46px);line-height:1.1}
+  .cta h2 span{color:var(--yellow)}
+  .cta p{font-size:14.5px;font-weight:700;margin-top:12px;max-width:40ch;opacity:.82}
+  .cta .go{margin-left:auto;background:var(--red);color:#fff;text-decoration:none;font-family:var(--f-head);font-size:20px;padding:14px 26px;border:3px solid var(--paper);box-shadow:5px 5px 0 var(--yellow);white-space:nowrap}
+  .cta .go:hover{background:var(--yellow);color:var(--ink);box-shadow:5px 5px 0 var(--red)}
+
+  footer{background:var(--ink);color:#9C947C;padding-block:22px 40px;font-size:12px;line-height:1.75}
+  footer a{color:var(--paper2)}
+  footer .srcs{display:flex;flex-wrap:wrap;gap:3px 13px;margin-top:8px;opacity:.75}
+  .contact{margin-top:16px;padding-top:13px;border-top:1px solid rgba(239,230,210,.2);font-size:12.5px;color:var(--paper2)}
+  .contact a{color:var(--yellow);font-weight:900;text-decoration:none;border-bottom:1.5px solid rgba(240,190,43,.45)}
+  .contact a:hover{color:#fff;border-bottom-color:#fff}
+
+  /* ═══ 편집 모드 ═══ */
+  #ebar{position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--paper);
+    border-top:3px solid var(--yellow);padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
+    display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;font-weight:700}
+  #ebar .ttl{font-family:var(--f-head);font-size:15px;color:var(--yellow);margin-right:4px}
+  #ebar .msg{opacity:.7;font-size:12px}
+  .ebtn{font-family:var(--f-body);font-weight:900;font-size:12.5px;cursor:pointer;background:var(--paper);color:var(--ink);border:2px solid var(--paper);padding:6px 12px}
+  .ebtn:hover{background:var(--yellow);border-color:var(--yellow)}
+  .ebtn.on{background:var(--red);color:#fff;border-color:var(--red)}
+  .ebtn.ghost{background:transparent;color:var(--paper);opacity:.7}
+  .ebtn.ghost:hover{opacity:1;background:transparent;color:var(--yellow)}
+  body.editing{padding-bottom:86px}
+  #ehint{background:var(--red);color:#fff;padding:11px 18px;font-size:13px;font-weight:700;line-height:1.55;
+    border-bottom:3px solid var(--ink)}
+  #ehint b{color:var(--yellow)}
+  body.editing [contenteditable]{outline:2px dashed rgba(198,56,44,.55);outline-offset:3px;border-radius:2px;min-width:14px;min-height:1em}
+  body.editing [contenteditable]:focus{outline:3px solid var(--red);background:rgba(240,190,43,.28)}
+  body.editing .pin{cursor:grab}
+  body.editing .pin:active{cursor:grabbing}
+  .emeta{margin:14px 18px 0;border-top:2px dashed rgba(21,19,14,.3);padding-top:10px;font-size:12px;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:baseline}
+  .emeta b{font-weight:900;color:#6B6450;white-space:nowrap}
+  .emeta span[contenteditable]{font-weight:700;word-break:break-all}
+  .edel{position:absolute;top:-13px;left:12px;background:var(--red);color:#fff;border:2.5px solid var(--ink);
+    font-size:11px;font-weight:900;padding:2px 9px;cursor:pointer;font-family:var(--f-body)}
+  #eout{position:fixed;inset:20px;z-index:300;background:var(--paper);border:3px solid var(--ink);box-shadow:var(--hard);
+    display:flex;flex-direction:column;padding:16px}
+  #eout h3{font-family:var(--f-head);font-size:20px;margin-bottom:6px}
+  #eout p{font-size:13px;font-weight:700;margin-bottom:10px}
+  #eout textarea{flex:1;width:100%;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;
+    border:2px solid var(--ink);padding:10px;background:#fff;color:var(--ink);resize:none}
+  #eout .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+
+  @media (max-width:880px){
+    .mapgrid{grid-template-columns:1fr}
+    .hero-in{grid-template-columns:1fr}
+    .biglogo{justify-self:start;transform:rotate(-3deg)}
+  }
+  @media (max-width:520px){
+    .bar nav{display:none}
+    .bar .ig{margin-left:auto}
+    .cta .go{margin-left:0;width:100%;text-align:center}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap bar-in">
+    <img src="data:image/png;base64,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" alt="나갈래 로고">
+    <b data-ed="">나갈래</b>
+    <nav>
+      <a href="#play">노는 법</a>
+      <a href="#where">어디 갈래</a>
+      <a href="#map">지도</a>
+      <a href="#kit">준비물</a>
+    </nav>
+    <a class="ig" href="https://www.instagram.com/nagalae_kaist/" target="_blank" rel="noopener" data-ed="">@nagalae_kaist</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-in">
+      <div>
+        <span class="kicker" data-ed="">KAIST CAMPING CLUB</span>
+        <h1 data-ed="">오늘<br>어디로<br><span>나갈래?</span></h1>
+        <p data-ed="">안녕하세요, KAIST 최고의 캠핑&amp;글램핑 동아리 나갈래 입니다.</p>
+        <p class="sub" data-ed="">카이스트에서 한 시간 안에 갈 수 있고 지금도 영업 중인 캠핑장을 찾아뒀습니다.</p>
+      </div>
+      <img class="biglogo" src="data:image/png;base64,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" alt="나갈래 캠프파이어 로고">
+    </div>
+    <div class="badges">
+      <span class="badge"><b id="nspots">12</b>곳 정리함</span>
+      <span class="badge" data-ed="">제일 가까운 곳은 <b>20분</b> 걸림</span>
+      <span class="badge" data-ed="">제일 싼 데 <b>1.5만원</b></span>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section id="play" class="wrap">
+    <div class="sh"><span class="no">01</span><h2 data-ed="">나갈래는 이렇게 놉니다</h2></div>
+    <p class="sh-sub" data-ed="">우리 동아리를 소개합니다!</p>
+    <div class="play">
+      <div class="pcard">
+        <span class="n" data-ed="">REGULAR</span>
+        <h3 data-ed="">매주 수요일 밤 9시 30분</h3>
+        <p data-ed="">정모는 매주 수요일 오후 9시 30분입니다. 술도 마시고 이것저것 하면서 놉니다. 여기에 더해 학기마다 MT 한 번, 캠핑 한 번 갔다 옵니다.</p>
+      </div>
+      <div class="pcard">
+        <span class="n" data-ed="">RECRUIT</span>
+        <h3 data-ed="">봄·가을 리크루팅</h3>
+        <p data-ed="">캠핑은 하다 보면 자연스럽게 경험이 쌓이니까, 캠핑 경험도 장비도 없어도 됩니다. 우리랑 함께 즐겁게 캠핑 다닐 수 있는 사람을 뽑습니다. 지원 링크는 인스타 프로필에 올라옵니다.</p>
+      </div>
+      <div class="pcard">
+        <span class="n" data-ed="">ASK</span>
+        <h3 data-ed="">무엇이든 물어보세요</h3>
+        <p data-ed="">인스타 스토리로 무물 받습니다. 뭐가 궁금하든 DM 주세요. 진짜로 다 답합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="where" class="wrap">
+    <div class="sh"><span class="no">02</span><h2 data-ed="">오늘 어디 갈래?</h2></div>
+    <p class="sh-sub" data-ed="">2026년 9월 기준 영업 확인된 곳만 올렸습니다. 추후 지속적으로 업데이트 하도록 하겠습니다.</p>
+    <div class="scen" id="scen">
+      <button class="sbtn" data-v="all" aria-pressed="true" data-ed="">그냥 다 보기</button>
+      <button class="sbtn" data-v="cheap" aria-pressed="false" data-ed="">통장이 텅텅</button>
+      <button class="sbtn" data-v="newbie" aria-pressed="false" data-ed="">첫 캠핑인 애가 있음</button>
+      <button class="sbtn" data-v="big" aria-pressed="false" data-ed="">사람 많이 감</button>
+      <button class="sbtn" data-v="rain" aria-pressed="false" data-ed="">비 온다는데</button>
+      <button class="sbtn" data-v="dog" aria-pressed="false" data-ed="">강아지 데려감</button>
+      <button class="sbtn" data-v="view" aria-pressed="false" data-ed="">사진 잘 나와야 함</button>
+    </div>
+    <p class="hits" id="hits">12곳</p>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section id="map" class="wrap">
+    <div class="sh"><span class="no">03</span><h2 data-ed="">얼마나 걸리지?</h2></div>
+    <p class="sh-sub" data-ed="">KAIST에서 차로 몇 분 걸리는지와 어느 방향인지 대략적으로 표시한 그림입니다. 점 누르면 위 카드로 갑니다.</p>
+    <div class="mapgrid">
+      <div class="mapbox">
+        <svg id="svgmap" viewBox="0 0 600 620" role="img" aria-label="KAIST를 중심으로 방향과 차량 소요 시간에 따라 캠핑장을 배치한 그림">
+          <circle cx="300" cy="295" r="90" class="ringfill"></circle>
+          <line x1="300" y1="42" x2="300" y2="548" class="spoke"></line>
+          <line x1="47" y1="295" x2="553" y2="295" class="spoke"></line>
+          <circle cx="300" cy="295" r="90" class="ring"></circle>
+          <circle cx="300" cy="295" r="170" class="ring"></circle>
+          <circle cx="300" cy="295" r="250" class="ring"></circle>
+          <text x="300" y="221" class="rlab">20 MIN</text>
+          <text x="300" y="141" class="rlab">40 MIN</text>
+          <text x="300" y="61" class="rlab">60 MIN</text>
+          <text x="300" y="30" class="rlab">N</text>
+          <g class="home">
+            <circle cx="300" cy="295" r="7"></circle>
+            <text x="300" y="319" class="hlab">KAIST</text>
+          </g>
+          <g id="pins"></g>
+        </svg>
+      </div>
+      <div class="key">
+        <div class="keybox">
+          <h4 data-ed="">점 색깔</h4>
+          <div class="krow"><span class="sw" style="background:#6E7C36"></span><span data-ed="">오토캠핑 — 차 대고 바로 텐트</span></div>
+          <div class="krow"><span class="sw" style="background:#E4568F"></span><span data-ed="">글램핑·카라반 — 침대 있음</span></div>
+          <div class="krow"><span class="sw" style="background:#4E7FA6"></span><span data-ed="">휴양림·국립공원 — 숲, 등산</span></div>
+        </div>
+        <div class="keybox tip">
+          <h4 data-ed="">읽는 법</h4>
+          <p data-ed="">안쪽 원부터 20분 / 40분 / 60분. 방향은 KAIST 기준 진짜 방위입니다. 산내동 쪽(상소·꿈꾸는농부·캠프향기·문글램핑)은 넷이 거의 붙어 있어서 이름 안 겹치게 살짝 벌려 찍었습니다. 시간은 주말 낮에 승용차로 카이스트에서 출발한 것 기준 시간입니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kit" class="wrap">
+    <div class="sh"><span class="no">04</span><h2 data-ed="">처음 가면 뭐 챙기냐</h2></div>
+    <p class="sh-sub" data-ed="">혼자 혹은 친구들하고만 간다면 챙겨야 할 준비물이 정말 많지만, 나갈래와 함께라면 별로 챙길 게 없어요!</p>
+    <div class="kit">
+      <div class="kbox">
+        <h3 data-ed="">너가 챙길 것</h3>
+        <ul>
+          <li data-ed="">침낭</li>
+          <li data-ed="">보조배터리</li>
+          <li data-ed="">갈아입을 옷, 세면도구</li>
+        </ul>
+      </div>
+      <div class="kbox">
+        <h3 data-ed="">동아리가 챙길 것</h3>
+        <ul>
+          <li data-ed="">텐트, 타프, 팩, 망치</li>
+          <li data-ed="">화로대, 장작, 토치, 집게</li>
+          <li data-ed="">버너, 코펠, 아이스박스</li>
+          <li data-ed="">의자, 테이블, 감성등</li>
+        </ul>
+      </div>
+      <div class="kbox">
+        <h3 data-ed="">예약 전 확인할 것</h3>
+        <ul>
+          <li data-ed="">사이트당 인원 제한</li>
+          <li data-ed="">전기 되는지</li>
+          <li data-ed="">매점 있는지</li>
+          <li data-ed="">강아지 되는지</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="cta">
+  <div class="wrap cta-in">
+    <div>
+      <h2 data-ed="">그래서, <span>나갈래?</span></h2>
+      <p data-ed="">리크루팅 일정이랑 지원 링크는 인스타 프로필에 올라옵니다. 궁금한 거 있으면 그냥 DM 주세요.</p>
+    </div>
+    <a class="go" href="https://www.instagram.com/nagalae_kaist/" target="_blank" rel="noopener" data-ed="">@nagalae_kaist →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p data-ed=""><b>2026년 9월 기준으로 영업이 확인된 곳만 올렸습니다.</b> 요금이랑 운영 기간은 이 시점 공개 정보라 성수기엔 바뀔 수 있으니, 예약 전에 캠핑장에 한 번 확인하세요. 소요 시간은 KAIST 본원 기준 승용차 대충입니다.</p>
+    <p style="margin-top:10px" data-ed="">추후 업데이트를 통해 더 많은 캠핑장을 소개해드리고자 합니다. 나갈래 예쁘게 봐주시고 많이많이 지원해주세요~ <b>-회장 송정민-</b></p>
+    <div class="srcs">
+      <span>자료 —</span>
+      <a href="https://www.gocamping.or.kr/" target="_blank" rel="noopener">한국관광공사 고캠핑</a>
+      <a href="https://www.foresttrip.go.kr/" target="_blank" rel="noopener">숲나들e</a>
+      <a href="https://res.knps.or.kr/" target="_blank" rel="noopener">국립공원 예약</a>
+      <a href="https://www.donggu.go.kr/dg/tour/96/11/sights" target="_blank" rel="noopener">대전 동구청</a>
+      <a href="https://www.djjunggu.go.kr/hyo/sub06_07_01.do" target="_blank" rel="noopener">중구 효월드</a>
+      <a href="https://www.sjfmc.or.kr/hapgang.do" target="_blank" rel="noopener">세종시설관리공단</a>
+    </div>
+    <p class="contact" data-ed="">사이트 관련 문의는 <a href="mailto:kwangrok@kaist.ac.kr">kwangrok@kaist.ac.kr</a> 로 보내주세요. 캠핑장 정보가 바뀌었거나 빠진 곳이 있으면 알려주시면 반영하겠습니다.</p>
+  </div>
+</footer>
+
+<script id="camp-data" type="application/json">
+[
+ {
+  "id": "hagi",
+  "name": "하기숲 가족캠핑장",
+  "short": "하기숲",
+  "loc": "유성구 하기동 259",
+  "min": "20",
+  "far": 0,
+  "type": "auto",
+  "mx": 237,
+  "my": 231,
+  "la": "end",
+  "price": "주중 15,000 / 주말 25,000원",
+  "gist": "유성구 직영 14면. 작아서 붐비지 않고, 사이트마다 개별 화로대가 놓여 있습니다. 여름엔 물놀이장이 열립니다.",
+  "chips": [
+   "샤워실 2",
+   "개수대",
+   "전기",
+   "온수",
+   "놀이터"
+  ],
+  "bad": [
+   "강아지 X"
+  ],
+  "say": "KAIST에서 20분. 대전에서 제일 가까운 정식 캠핑장인데 숲 한가운데입니다. 14면뿐이라 주말은 서둘러야 합니다.",
+  "tags": [
+   "cheap",
+   "newbie"
+  ],
+  "tel": "070-7727-5500",
+  "url": "http://hgscamp.kr/",
+  "ut": "하기숲캠핑장"
+ },
+ {
+  "id": "ppuri",
+  "name": "뿌리공원 캠핑장",
+  "short": "뿌리공원",
+  "loc": "중구 뿌리공원로 79",
+  "min": "25",
+  "far": 0,
+  "type": "auto",
+  "mx": 322,
+  "my": 403,
+  "la": "end",
+  "price": "4인 20,000원",
+  "gist": "평상 위에 4인용 텐트를 치는 방식. 전기랑 야외탁자가 딸려 있고, 텐트도 5천 원에 빌려줍니다.",
+  "chips": [
+   "텐트 대여 5,000원",
+   "취사장",
+   "샤워장",
+   "전기",
+   "야외탁자"
+  ],
+  "bad": [
+   "11~2월 휴장",
+   "3~5·10월은 주말만"
+  ],
+  "say": "몸만 가도 되는 유일한 곳. 4명이면 1인당 5천 원. 입실 3일 전까지 예약해야 합니다.",
+  "tags": [
+   "cheap",
+   "newbie"
+  ],
+  "tel": "042-288-8200",
+  "url": "https://www.djjunggu.go.kr/hyo/sub06_07_01.do",
+  "ut": "효월드"
+ },
+ {
+  "id": "sandi",
+  "name": "산디마을생태공원 오토캠핑장",
+  "short": "산디마을",
+  "loc": "대덕구 산디로 190",
+  "min": "30",
+  "far": 0,
+  "type": "auto",
+  "mx": 408,
+  "my": 222,
+  "la": "start",
+  "price": "25,000~30,000원",
+  "gist": "계족산 자락 17면. 11m × 6.4m 대형 사이트가 따로 있어서 여럿이 붙어 자기 좋습니다.",
+  "chips": [
+   "매점",
+   "장작 판매",
+   "샤워",
+   "전기",
+   "개별 화로대",
+   "릴선 대여"
+  ],
+  "bad": [],
+  "say": "대형 사이트 하나 잡고 나눠 내면 부담이 확 줄어듭니다. 계족산 황톳길이랑 묶으면 하루가 꽉 찹니다.",
+  "tags": [
+   "big"
+  ],
+  "tel": "070-4158-3360",
+  "url": "http://www.sandicamp.com",
+  "ut": "산디캠프"
+ },
+ {
+  "id": "moon",
+  "name": "moon 문글램핑",
+  "short": "문글램핑",
+  "loc": "동구 산내로 237",
+  "min": "30",
+  "far": 0,
+  "type": "glam",
+  "mx": 332,
+  "my": 437,
+  "la": "middle",
+  "price": "139,000~319,000원",
+  "gist": "27동짜리 글램핑 단지. 침대·냉장고·개별 화장실까지 있어서 사실상 숙박입니다. 사계절 미온수풀이 있습니다.",
+  "chips": [
+   "침대",
+   "냉난방",
+   "개별 화장실·샤워",
+   "사계절 수영장",
+   "개별 바비큐",
+   "와이파이"
+  ],
+  "bad": [
+   "소형견만"
+  ],
+  "say": "비싸니까 6명 채워서 나눠 내야 합니다. 비 온다고 뜨면 여기로 가면 됩니다. 겨울에도 수영이 됩니다.",
+  "tags": [
+   "rain",
+   "dog",
+   "view"
+  ],
+  "tel": "",
+  "url": "https://www.yeogi.com/domestic-accommodations/76294",
+  "ut": "예약 보기"
+ },
+ {
+  "id": "sangso",
+  "name": "상소오토캠핑장",
+  "short": "상소오토",
+  "loc": "동구 산내로 748",
+  "min": "35",
+  "far": 0,
+  "type": "auto",
+  "mx": 386,
+  "my": 405,
+  "la": "start",
+  "price": "주중 20,000 / 주말 25,000원",
+  "gist": "동구 직영. 4만 3천㎡ 부지에 사이트 68면으로 대전에서 제일 큽니다. 연중 엽니다.",
+  "chips": [
+   "화장실 3",
+   "취사장 2",
+   "사계절 온수 샤워장 2",
+   "사이트별 전기"
+  ],
+  "bad": [
+   "매점 없음"
+  ],
+  "say": "크니까 인접 사이트 여러 개 잡기가 제일 쉽습니다. 종강 캠핑은 보통 여기. 장은 꼭 보고 가세요.",
+  "tags": [
+   "cheap",
+   "big",
+   "newbie"
+  ],
+  "tel": "042-273-4174",
+  "url": "https://www.sangsocamping.kr",
+  "ut": "상소오토캠핑장"
+ },
+ {
+  "id": "dream",
+  "name": "꿈꾸는농부 오토캠핑장",
+  "short": "꿈꾸는농부",
+  "loc": "동구 산내로 716",
+  "min": "35",
+  "far": 0,
+  "type": "auto",
+  "mx": 395,
+  "my": 443,
+  "la": "start",
+  "price": "오토 30,000~50,000 / 카라반 109,000원~",
+  "gist": "오토캠핑 11면에 카라반·스파카라반이 따로 있습니다. 바닥이 잔디랑 정원석이라 파쇄석 사이트보다 눕기 편합니다.",
+  "chips": [
+   "잔디 바닥",
+   "개별 화로대",
+   "카라반",
+   "애견동반 카라반",
+   "연박 할인"
+  ],
+  "bad": [
+   "애견 7kg 이하 · 1마리 1만원"
+  ],
+  "say": "조용한 데 찾을 때. 오토는 연박하면 평일 1만·주말 2만 원 깎아줍니다. 텐트 치기 싫은 날엔 카라반으로 갈아타면 됩니다.",
+  "tags": [
+   "view",
+   "dog"
+  ],
+  "tel": "010-2412-1340",
+  "url": "https://www.yeogi.com/domestic-accommodations/75382",
+  "ut": "예약 보기"
+ },
+ {
+  "id": "hyanggi",
+  "name": "캠프향기",
+  "short": "캠프향기",
+  "loc": "동구 산내로 710",
+  "min": "35",
+  "far": 0,
+  "type": "glam",
+  "mx": 437,
+  "my": 473,
+  "la": "start",
+  "price": "150,000~220,000원",
+  "gist": "글램핑 9동 + 카라반 6대, 총 15동. 반려견 동반 전문이라 강아지 데려가는 게 눈치 안 보입니다.",
+  "chips": [
+   "벽난로",
+   "개별 바비큐장",
+   "수영장(5~10월)",
+   "바닥난방",
+   "와이파이"
+  ],
+  "bad": [
+   "반려견 1마리 1만원 · 최대 2마리"
+  ],
+  "say": "강아지 데려오고 싶은 부원 있을 때의 정답. 반려견 전용 물가랑 드라이기까지 있습니다.",
+  "tags": [
+   "dog",
+   "rain"
+  ],
+  "tel": "010-9907-6830",
+  "url": "http://www.camparoma.co.kr/",
+  "ut": "캠프향기"
+ },
+ {
+  "id": "jangtae",
+  "name": "장태산자연휴양림 야영장",
+  "short": "장태산",
+  "loc": "서구 장안로 461",
+  "min": "35",
+  "far": 0,
+  "type": "forest",
+  "mx": 262,
+  "my": 443,
+  "la": "end",
+  "price": "숲나들e에서 확인",
+  "gist": "메타세쿼이아 숲 한가운데 20면(파쇄석 14 · 데크 6). 분위기는 대전에서 제일입니다.",
+  "chips": [
+   "화장실",
+   "샤워장",
+   "스카이웨이"
+  ],
+  "bad": [
+   "차량 진입 X",
+   "강아지 X",
+   "매점 없음"
+  ],
+  "say": "스카이웨이에서 숲 위로 해 지는 것을 보는 것이 멋지고 아름답습니다.",
+  "tags": [
+   "view"
+  ],
+  "tel": "042-270-7883",
+  "url": "https://www.foresttrip.go.kr/indvz/main.do?hmpgId=ID02030106",
+  "ut": "숲나들e"
+ },
+ {
+  "id": "hapgang",
+  "name": "세종 합강캠핑장",
+  "short": "세종 합강",
+  "loc": "세종 태산로 329",
+  "min": "35",
+  "far": 1,
+  "type": "auto",
+  "mx": 260,
+  "my": 150,
+  "la": "end",
+  "price": "25,000~38,000원",
+  "gist": "금강이랑 미호천이 만나는 자리, 136면. 사방이 뻥 뚫려 있습니다. 텐트만 치는 프리캠핑은 1.5~2만 원.",
+  "chips": [
+   "프리캠핑 15,000원~",
+   "개별 화로대",
+   "산책로",
+   "놀이터",
+   "낚시",
+   "덤프스테이션"
+  ],
+  "bad": [
+   "설·추석 당일 휴장"
+  ],
+  "say": "136면이라 급하게 잡아도 될 확률이 제일 높습니다. 아침 물안개 풍경이 정말 예쁘다고 합니다.",
+  "tags": [
+   "cheap",
+   "big",
+   "view"
+  ],
+  "tel": "044-850-1117",
+  "url": "https://www.sjfmc.or.kr/hapgang.do",
+  "ut": "세종 합강캠핑장"
+ },
+ {
+  "id": "donghak",
+  "name": "계룡산 동학사자동차야영장",
+  "short": "동학사",
+  "loc": "공주 반포면 동학사2로 115-16",
+  "min": "40",
+  "far": 1,
+  "type": "forest",
+  "mx": 137,
+  "my": 341,
+  "la": "end",
+  "price": "15,000원 (성수기 19,000원)",
+  "gist": "국립공원 22면. 계룡산 등산로 입구가 바로 앞이라 캠핑하고 바로 올라갑니다. 사이트는 5m × 8m.",
+  "chips": [
+   "개별 화로대",
+   "전기",
+   "무선인터넷",
+   "개수대"
+  ],
+  "bad": [
+   "카라반·트레일러 X",
+   "강아지 X"
+  ],
+  "say": "캠핑+등산 세트. 아침에 남매탑 찍고 내려와서 점심 먹고 철수가 정석입니다. 대전권 최저가 축이라 예약 경쟁이 셉니다.",
+  "tags": [
+   "cheap",
+   "view"
+  ],
+  "tel": "042-825-9597",
+  "url": "https://res.knps.or.kr/reservation/searchSimpleCampReservation.do",
+  "ut": "국립공원 예약"
+ },
+ {
+  "id": "geumsan",
+  "name": "금산산림문화타운",
+  "short": "금산산림문화타운",
+  "loc": "금산 남이면 느티골길 200",
+  "min": "45",
+  "far": 1,
+  "type": "forest",
+  "mx": 340,
+  "my": 501,
+  "la": "middle",
+  "price": "숲나들e에서 확인",
+  "gist": "텐트 전용 데크 40면, 한 면이 7.5m × 7.5m(56㎡). 대전권에서 제일 넓은 축입니다. 캠핑카 전용 14면은 따로 있습니다.",
+  "chips": [
+   "텐트 데크 40면",
+   "캠핑카 14면",
+   "휴양림 부대시설"
+  ],
+  "bad": [],
+  "say": "대형 텐트에 타프까지 한 사이트에 다 들어갑니다. 방학 정기 캠핑 후보로 한 번쯤.",
+  "tags": [
+   "big",
+   "view"
+  ],
+  "tel": "041-753-5706",
+  "url": "https://www.foresttrip.go.kr/indvz/main.do?hmpgId=ID02030063",
+  "ut": "숲나들e"
+ },
+ {
+  "id": "gapsa",
+  "name": "계룡산 갑사자동차야영장",
+  "short": "갑사",
+  "loc": "공주 계룡면 갑사",
+  "min": "50",
+  "far": 1,
+  "type": "forest",
+  "mx": 100,
+  "my": 375,
+  "la": "middle",
+  "price": "주중 20,000 / 주말 30,000원",
+  "gist": "동학사 반대편, 갑사 쪽 국립공원 야영장. 자동차 11동 + 캠핑카 10동 + 복합 2동.",
+  "chips": [
+   "샤워장(4~11월)",
+   "개수대",
+   "친환경 놀이터"
+  ],
+  "bad": [],
+  "say": "동학사가 다 찼을 때의 대안. 갑사 계곡이 바로 옆이라 여름에 특히 좋습니다.",
+  "tags": [
+   "view"
+  ],
+  "tel": "041-881-3007",
+  "url": "https://res.knps.or.kr/reservation/searchSimpleCampReservation.do",
+  "ut": "국립공원 예약"
+ }
+]
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var COLOR = {auto:"#6E7C36", glam:"#E4568F", forest:"#4E7FA6"};
+  var LABEL = {all:"", cheap:"싼 데로", newbie:"초보 데리고 가기 좋은 데", big:"단체로 갈 만한 데",
+               rain:"비 와도 되는 데", dog:"강아지 되는 데", view:"사진 잘 나오는 데"};
+  var DRAFT = "nagalae-draft-v1";
+
+  var CAMPS = [];
+  try { CAMPS = JSON.parse(document.getElementById("camp-data").textContent); }
+  catch(e){ CAMPS = []; }
+
+  var editing = false;
+  var wantsEdit = /(\?|&)edit\b/.test(location.search) || location.hash === "#edit";
+  // 미리보기 창(iframe) 안에서는 브라우저가 파일 저장을 막습니다 — 복사만 씁니다.
+  var embedded = true;
+  try { embedded = (window.top !== window.self); } catch(e) { embedded = true; }
+
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function list(a){ return (a||[]).join(", "); }
+  function parseList(s){ return String(s).split(/[,、·]/).map(function(x){return x.trim();}).filter(Boolean); }
+  function byId(id){ for(var i=0;i<CAMPS.length;i++) if(CAMPS[i].id===id) return CAMPS[i]; return null; }
+
+  /* ── 초안 (글 + 캠핑장 데이터 전부 자동 저장) ── */
+  var dirty = false, saveTimer = null, stampFn = null;
+
+  function proseNodes(){
+    return Array.prototype.slice.call(document.querySelectorAll("[data-ed]"));
+  }
+  function snapshot(){
+    var nodes = proseNodes(), prose = {};
+    nodes.forEach(function(el, i){ prose[i] = el.innerHTML; });
+    return { v:2, camps: CAMPS, prose: prose, n: nodes.length, at: Date.now() };
+  }
+  function saveDraft(){
+    dirty = true;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      try{
+        localStorage.setItem(DRAFT, JSON.stringify(snapshot()));
+        if(stampFn) stampFn();
+      }catch(e){
+        if(stampFn) stampFn("저장 공간이 막혀 있습니다 — 자주 'HTML 복사'를 하세요.");
+      }
+    }, 500);
+  }
+  function readDraft(){
+    try{
+      var raw = localStorage.getItem(DRAFT);
+      if(!raw) return null;
+      var d = JSON.parse(raw);
+      return (d && d.v === 2) ? d : null;
+    }catch(e){ return null; }
+  }
+  function applyDraft(d){
+    if(Array.isArray(d.camps) && d.camps.length) CAMPS = d.camps;
+    var nodes = proseNodes();
+    if(d.prose && d.n === nodes.length){
+      nodes.forEach(function(el, i){ if(d.prose[i] != null) el.innerHTML = d.prose[i]; });
+      return true;
+    }
+    return false;
+  }
+
+  /* ── 카드 ── */
+  function cardHTML(d){
+    var chips = (d.chips||[]).map(function(c){return '<i>'+esc(c)+'</i>';}).join("")
+              + (d.bad||[]).map(function(c){return '<i class="bad">'+esc(c)+'</i>';}).join("");
+    var meta = editing ? (
+      '<div class="emeta">'
+      + '<b>시설</b><span data-f="chips">'+esc(list(d.chips))+'</span>'
+      + '<b>주의</b><span data-f="bad">'+esc(list(d.bad))+'</span>'
+      + '<b>분</b><span data-f="min">'+esc(d.min)+'</span>'
+      + '<b>근교(1/0)</b><span data-f="far">'+esc(d.far)+'</span>'
+      + '<b>종류</b><span data-f="type">'+esc(d.type)+'</span>'
+      + '<b>태그</b><span data-f="tags">'+esc(list(d.tags))+'</span>'
+      + '<b>전화</b><span data-f="tel">'+esc(d.tel)+'</span>'
+      + '<b>링크</b><span data-f="url">'+esc(d.url)+'</span>'
+      + '<b>링크 이름</b><span data-f="ut">'+esc(d.ut)+'</span>'
+      + '<b>지도 이름</b><span data-f="short">'+esc(d.short)+'</span>'
+      + '</div>') : '';
+    return '<article class="card" id="c-'+esc(d.id)+'" data-cid="'+esc(d.id)+'">'
+      + (editing ? '<button class="edel" type="button">삭제</button>' : '')
+      + (d.far ? '<span class="far">근교</span>' : '')
+      + '<div class="chead"><div><h3 data-f="name">'+esc(d.name)+'</h3>'
+      + '<p class="loc" data-f="loc">'+esc(d.loc)+'</p></div>'
+      + '<span class="mins"><b>'+esc(d.min)+'</b><span>MIN</span></span></div>'
+      + '<span class="price" data-f="price">'+esc(d.price)+'</span>'
+      + '<p class="gist" data-f="gist">'+esc(d.gist)+'</p>'
+      + '<div class="chips">'+chips+'</div>'
+      + meta
+      + '<div class="bubble"><h4>나갈래 한마디</h4><p data-f="say">'+esc(d.say)+'</p></div>'
+      + '<div class="cfoot"><a href="'+esc(d.url)+'" target="_blank" rel="noopener">'+esc(d.ut)+' ↗</a>'
+      + (d.tel ? '<span class="tel">'+esc(d.tel)+'</span>' : '') + '</div>'
+      + '</article>';
+  }
+
+  /* ── 지도 핀 ── */
+  function pinsHTML(){
+    return CAMPS.map(function(d){
+      var lx = d.mx, ly = d.my + 4, anc = "";
+      if(d.la === "start"){ lx = d.mx + 13; }
+      else if(d.la === "end"){ lx = d.mx - 13; anc = ' text-anchor="end"'; }
+      else { ly = d.my + 22; anc = ' text-anchor="middle"'; }
+      return '<g class="pin" data-id="'+esc(d.id)+'" tabindex="0" role="button" aria-label="'+esc(d.name)+', 약 '+esc(d.min)+'분">'
+        + '<circle class="halo" cx="'+d.mx+'" cy="'+d.my+'"></circle>'
+        + '<circle class="dot" fill="'+(COLOR[d.type]||COLOR.auto)+'" cx="'+d.mx+'" cy="'+d.my+'" r="7"></circle>'
+        + '<text x="'+lx+'" y="'+ly+'" class="plab"'+anc+'>'+esc(d.short||d.name)+'</text>'
+        + '</g>';
+    }).join("");
+  }
+
+  var cardsEl = document.getElementById("cards");
+  var pinsEl  = document.getElementById("pins");
+  var hitsEl  = document.getElementById("hits");
+  var scenEl  = document.getElementById("scen");
+  var cur = "all";
+
+  function render(){
+    cardsEl.innerHTML = CAMPS.map(cardHTML).join("");
+    pinsEl.innerHTML = pinsHTML();
+    document.getElementById("nspots").textContent = CAMPS.length;
+    if(editing) markEditable(cardsEl);
+    applyFilter();
+  }
+
+  function applyFilter(){
+    var n = 0;
+    CAMPS.forEach(function(d){
+      var el = document.getElementById("c-"+d.id);
+      if(!el) return;
+      var ok = editing || cur === "all" || (d.tags||[]).indexOf(cur) > -1;
+      el.hidden = !ok;
+      if(ok) n++;
+    });
+    hitsEl.textContent = (cur === "all" || editing) ? n + "곳" : LABEL[cur] + " " + n + "곳";
+  }
+
+  scenEl.addEventListener("click", function(e){
+    if(editing) return;
+    var b = e.target.closest(".sbtn");
+    if(!b) return;
+    cur = b.getAttribute("data-v");
+    scenEl.querySelectorAll(".sbtn").forEach(function(x){ x.setAttribute("aria-pressed", String(x === b)); });
+    applyFilter();
+  });
+
+  function jump(id){
+    cur = "all";
+    scenEl.querySelectorAll(".sbtn").forEach(function(x){ x.setAttribute("aria-pressed", String(x.getAttribute("data-v") === "all")); });
+    applyFilter();
+    var el = document.getElementById("c-"+id);
+    if(!el) return;
+    el.scrollIntoView({behavior:"smooth", block:"center"});
+    document.querySelectorAll(".card.flash").forEach(function(c){ c.classList.remove("flash"); });
+    el.classList.add("flash");
+    setTimeout(function(){ el.classList.remove("flash"); }, 2400);
+  }
+
+  /* 핀 클릭 / 드래그 */
+  var svg = document.getElementById("svgmap"), dragging = null;
+  function svgPoint(evt){
+    var r = svg.getBoundingClientRect();
+    return { x: Math.round((evt.clientX - r.left) / r.width * 600),
+             y: Math.round((evt.clientY - r.top) / r.height * 620) };
+  }
+  pinsEl.addEventListener("pointerdown", function(e){
+    var g = e.target.closest(".pin"); if(!g || !editing) return;
+    dragging = { id: g.getAttribute("data-id"), moved: false };
+    g.setPointerCapture(e.pointerId);
+  });
+  pinsEl.addEventListener("pointermove", function(e){
+    if(!dragging) return;
+    var d = byId(dragging.id); if(!d) return;
+    var p = svgPoint(e);
+    d.mx = Math.max(12, Math.min(588, p.x));
+    d.my = Math.max(12, Math.min(608, p.y));
+    dragging.moved = true;
+    pinsEl.innerHTML = pinsHTML();
+  });
+  pinsEl.addEventListener("pointerup", function(){
+    if(dragging && dragging.moved) saveDraft();
+    dragging = null;
+  });
+  pinsEl.addEventListener("click", function(e){
+    var g = e.target.closest(".pin"); if(!g) return;
+    if(editing) return;
+    jump(g.getAttribute("data-id"));
+  });
+  pinsEl.addEventListener("keydown", function(e){
+    var g = e.target.closest(".pin"); if(!g) return;
+    if(e.key === "Enter" || e.key === " "){ e.preventDefault(); if(!editing) jump(g.getAttribute("data-id")); }
+  });
+
+  /* ── 편집 ── */
+  function markEditable(root){
+    root.querySelectorAll("[data-ed],[data-f]").forEach(function(el){
+      el.setAttribute("contenteditable", "true");
+      el.setAttribute("spellcheck", "false");
+    });
+  }
+  function unmarkEditable(){
+    document.querySelectorAll("[contenteditable]").forEach(function(el){
+      el.removeAttribute("contenteditable"); el.removeAttribute("spellcheck");
+    });
+  }
+
+  cardsEl.addEventListener("input", function(e){
+    var el = e.target.closest("[data-f]"); if(!el) return;
+    var card = el.closest(".card"); if(!card) return;
+    var d = byId(card.getAttribute("data-cid")); if(!d) return;
+    var f = el.getAttribute("data-f"), v = el.textContent.trim();
+    if(f === "chips" || f === "bad" || f === "tags") d[f] = parseList(v);
+    else if(f === "far") d.far = (v === "1" || v === "Y" || v === "y") ? 1 : 0;
+    else d[f] = v;
+    saveDraft();
+  });
+
+  cardsEl.addEventListener("click", function(e){
+    var b = e.target.closest(".edel"); if(!b) return;
+    if(b.dataset.armed !== "1"){
+      b.dataset.armed = "1"; b.textContent = "한 번 더 누르면 삭제";
+      setTimeout(function(){ b.dataset.armed = ""; b.textContent = "삭제"; }, 3000);
+      return;
+    }
+    var id = b.closest(".card").getAttribute("data-cid");
+    CAMPS = CAMPS.filter(function(d){ return d.id !== id; });
+    saveDraft(); render();
+  });
+
+  function addCamp(){
+    var id = "new" + Date.now().toString(36);
+    CAMPS.push({id:id, name:"새 캠핑장", short:"새 캠핑장", loc:"주소", min:"30", far:0, type:"auto",
+      mx:300, my:250, la:"start", price:"요금", gist:"한 줄 설명을 쓰세요.",
+      chips:["시설1","시설2"], bad:[], say:"동아리 한마디를 쓰세요.",
+      tags:["big"], tel:"", url:"https://", ut:"링크"});
+    saveDraft(); render();
+    var el = document.getElementById("c-"+id);
+    if(el) el.scrollIntoView({behavior:"smooth", block:"center"});
+  }
+
+  /* ── 내보내기 ── */
+  function buildHTML(){
+    var clone = document.body.cloneNode(true);
+    var bar = clone.querySelector("#ebar"); if(bar) bar.remove();
+    var out = clone.querySelector("#eout"); if(out) out.remove();
+    var hint = clone.querySelector("#ehint"); if(hint) hint.remove();
+    clone.querySelectorAll(".edel,.emeta").forEach(function(el){ el.remove(); });
+    clone.querySelectorAll("[contenteditable]").forEach(function(el){
+      el.removeAttribute("contenteditable"); el.removeAttribute("spellcheck");
+    });
+    var cards = clone.querySelector("#cards"); if(cards) cards.innerHTML = "";
+    var pins = clone.querySelector("#pins"); if(pins) pins.innerHTML = "";
+    var data = clone.querySelector("#camp-data");
+    if(data) data.textContent = "\n" + JSON.stringify(CAMPS, null, 1) + "\n";
+    clone.querySelectorAll("[data-keep]").forEach(function(el){ el.remove(); });
+    var head = [];
+    document.querySelectorAll("[data-keep]").forEach(function(el){ head.push(el.outerHTML); });
+    if(!/<title/i.test(head.join(""))) head.unshift("<title data-keep>" + document.title + "</title>");
+    return '<!doctype html>\n<html lang="ko">\n<head>\n'
+      + '<meta charset="utf-8">\n'
+      + '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
+      + head.join("\n") + '\n</head>\n<body>\n'
+      + clone.innerHTML.trim() + '\n</body>\n</html>\n';
+  }
+
+  function showOutput(html, note){
+    var box = document.createElement("div");
+    box.id = "eout";
+    box.innerHTML = '<h3>index.html</h3><p>'+esc(note)+'</p>'
+      + '<textarea spellcheck="false"></textarea>'
+      + '<div class="row"><button class="ebtn" data-a="copy">전체 선택 + 복사</button>'
+      + '<button class="ebtn ghost" data-a="close">닫기</button></div>';
+    document.body.appendChild(box);
+    var ta = box.querySelector("textarea");
+    ta.value = html;
+    box.addEventListener("click", function(e){
+      var b = e.target.closest("[data-a]"); if(!b) return;
+      if(b.dataset.a === "close"){ box.remove(); return; }
+      ta.focus(); ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch(err){}
+      b.textContent = ok ? "복사됨!" : "Ctrl/Cmd+C 를 누르세요";
+    });
+  }
+
+  function copyHTML(msg){
+    var html = buildHTML();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(html).then(function(){
+        dirty = false;
+        msg.textContent = "복사됨 (" + Math.round(html.length/1024) + "KB) — GitHub index.html 열고 "
+                        + "전체 선택 후 붙여넣기 → Commit 해야 반영됩니다";
+      }).catch(function(){
+        showOutput(html, "자동 복사가 막혔습니다. 아래 버튼으로 복사하세요.");
+      });
+    } else {
+      showOutput(html, "아래 버튼으로 복사하세요.");
+    }
+  }
+
+  function downloadHTML(msg){
+    var html = buildHTML();
+    try{
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([html], {type:"text/html"}));
+      a.download = "index.html";
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+      dirty = false;
+      msg.textContent = "index.html 저장했습니다 — 이 파일을 GitHub에 올려야 반영됩니다.";
+    }catch(err){
+      showOutput(html, "이 화면에서는 저장이 막혀 있습니다. 복사해서 쓰세요.");
+    }
+  }
+
+  /* ── 편집 툴바 ── */
+  function buildBar(){
+    var bar = document.createElement("div");
+    bar.id = "ebar";
+    bar.innerHTML =
+      '<span class="ttl">편집</span>'
+      + '<button class="ebtn" data-a="toggle">편집 켜기</button>'
+      + '<button class="ebtn" data-a="add">캠핑장 추가</button>'
+      + '<button class="ebtn" data-a="copy">HTML 복사</button>'
+      + (embedded ? '' : '<button class="ebtn" data-a="save">파일로 저장</button>')
+      + '<button class="ebtn ghost" data-a="reset">초안 지우기</button>'
+      + '<span class="msg"></span>';
+    document.body.appendChild(bar);
+    var msg = bar.querySelector(".msg");
+    var tgl = bar.querySelector('[data-a="toggle"]');
+
+    stampFn = function(txt){
+      if(txt){ msg.textContent = txt; return; }
+      var t = new Date();
+      msg.textContent = "자동 저장됨 " + t.toTimeString().slice(0,8)
+                      + " · 아직 사이트엔 반영 안 됨 → [HTML 복사] 누르세요";
+    };
+
+    // 글(제목·설명·준비물 등) 수정도 자동 저장
+    document.addEventListener("input", function(e){
+      if(!editing) return;
+      if(e.target.closest("[data-ed]")) saveDraft();
+    });
+
+    window.addEventListener("beforeunload", function(e){
+      if(!dirty) return;
+      e.preventDefault(); e.returnValue = "";
+    });
+
+    bar.addEventListener("click", function(e){
+      var b = e.target.closest("[data-a]"); if(!b) return;
+      var a = b.dataset.a;
+      if(a === "toggle"){
+        editing = !editing;
+        document.body.classList.toggle("editing", editing);
+        tgl.textContent = editing ? "편집 끄기" : "편집 켜기";
+        tgl.classList.toggle("on", editing);
+        if(editing){
+          markEditable(document.body);
+          if(!document.getElementById("ehint")){
+            var hint = document.createElement("div");
+            hint.id = "ehint";
+            hint.innerHTML = "편집 중입니다. 점선 친 글자를 눌러 고치고, 지도 점은 끌어서 옮기세요. "
+              + "고친 내용은 이 브라우저에 자동 저장되지만 <b>사이트에는 아직 반영되지 않습니다</b> — "
+              + "끝나면 아래 <b>[HTML 복사]</b> 를 누르고 GitHub의 index.html 에 붙여넣어 Commit 하세요.";
+            document.body.insertBefore(hint, document.body.firstChild);
+          }
+          document.getElementById("ehint").hidden = false;
+          msg.textContent = "편집을 켰습니다.";
+        }
+        else {
+          unmarkEditable();
+          var hh = document.getElementById("ehint"); if(hh) hh.hidden = true;
+          msg.textContent = dirty ? "편집을 껐습니다 — 아직 [HTML 복사] 안 했습니다." : "편집을 껐습니다.";
+        }
+        render();
+      }
+      else if(a === "add"){ if(!editing){ msg.textContent="먼저 편집을 켜세요."; return; } addCamp(); }
+      else if(a === "copy"){ copyHTML(msg); }
+      else if(a === "save"){ downloadHTML(msg); }
+      else if(a === "reset"){
+        if(b.dataset.armed !== "1"){
+          b.dataset.armed = "1"; b.textContent = "한 번 더 누르면 초기화";
+          setTimeout(function(){ b.dataset.armed=""; b.textContent="초안 지우기"; }, 3000);
+          return;
+        }
+        try{ localStorage.removeItem(DRAFT); }catch(err){}
+        location.reload();
+      }
+    });
+
+    var d = readDraft();
+    if(d){
+      var full = applyDraft(d);
+      render();
+      var when = new Date(d.at || Date.now());
+      msg.textContent = "저장해둔 초안을 불러왔습니다 (" + when.toLocaleString("ko-KR") + ")"
+                      + (full ? "" : " — 글 부분은 구조가 달라 복원하지 못했습니다");
+    }
+    else if(embedded) msg.textContent = "여기서는 파일 저장이 막혀 있어 'HTML 복사'를 쓰세요.";
+  }
+
+  render();
+  if(wantsEdit) buildBar();
+})();
+</script>
+</body>
+</html>
